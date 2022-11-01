@@ -7,7 +7,7 @@ class Timer extends Component {
   constructor() {
     super();
     this.state = {
-      time: 2,
+      time: 0,
       intervalId: 0,
     }
   };
@@ -19,10 +19,12 @@ class Timer extends Component {
 
   componentDidUpdate() {
     const { time, intervalId } = this.state;
+    const { alert, sound } = this.props;
     if (time === 0) {
       clearInterval(intervalId);
-      this.props.alert && window.alert(this.props.alert);
-      this.props.song && this.props.song.play();
+      sound && sound.play();
+      alert && window.alert(alert);
+      sound.pause();
     }
   };
 
@@ -68,7 +70,8 @@ class Timer extends Component {
       <div className='timerContainer'>
         <h1 className='timerTitle'>Timer!</h1>
         <div className='inputContainer'>
-          <Input 
+          <Input
+            disabled
             inputClass="timer"
             name="time"
             type="text"
