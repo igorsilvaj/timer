@@ -7,7 +7,7 @@ class Timer extends Component {
   constructor() {
     super();
     this.state = {
-      time: 0,
+      time: 2,
       intervalId: 0,
     }
   };
@@ -21,6 +21,8 @@ class Timer extends Component {
     const { time, intervalId } = this.state;
     if (time === 0) {
       clearInterval(intervalId);
+      this.props.alert && window.alert(this.props.alert);
+      this.props.song && this.props.song.play();
     }
   };
 
