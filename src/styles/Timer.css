@@ -29,6 +29,7 @@
 .btnContainer {
   width: 400px;
   display: flex;
+  flex-flow: row wrap;
   justify-content: space-around;
 }
 
@@ -40,4 +41,8 @@
 .setTime {
   margin-top: 10px;
   text-align: center;
+}
+
+.none {
+  display: none;
 }
