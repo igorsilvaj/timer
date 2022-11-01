@@ -1,25 +1,25 @@
 .timerContainer {
-  display: flex;
   align-items: center;
-  justify-content: center;
+  display: flex;
   flex-flow: row wrap;
+  justify-content: center;
 }
 
 .timerTitle {
-  font-size: 3em;
   color: white;
+  font-size: 3em;
   margin-bottom: 30px;
   text-shadow: 0 0 20px black;
 }
 
 .timer {
-  text-align: center;
-  width: 400px;
-  height: 100px;
   border-radius: 1em;
   background-color: black;
   color: white;
   font-size: 1.5em;
+  height: 100px;
+  text-align: center;
+  width: 400px;
 }
 
 .inputContainer {
@@ -27,10 +27,10 @@
 }
 
 .btnContainer {
-  width: 400px;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
+  width: 400px;
 }
 
 .setTimeContainer {

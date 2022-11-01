@@ -5,11 +5,11 @@
 }
 
 .App {
-  display: flex;
-  justify-content: center;
   align-items: center;
-  text-align: center;
   background-color: grey;
-  height: 100vh;
   background-image: linear-gradient(to right, #252525, #bababa);
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  text-align: center;
 }
