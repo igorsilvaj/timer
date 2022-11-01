@@ -4,9 +4,14 @@ import '../styles/Button.css';
 class Button extends Component {
   render() {
     const text = this.props.children;
-    const {btnClass, onClick} = this.props;
+    const {btnClass, onClick, disabled} = this.props;
     return (
-      <button className={btnClass} onClick={onClick}>{text}</button>
+      <button
+      className={btnClass} 
+      disabled={disabled ? true : false}
+      onClick={onClick}>
+        {text}
+      </button>
     )
   }
 };
