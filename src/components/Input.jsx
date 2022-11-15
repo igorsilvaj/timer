@@ -3,18 +3,20 @@ import React, { Component } from 'react';
 class Input extends Component {
   render() {
     const { id, inputClass, onChange, placeholder,
-      value, maxLength, disabled } = this.props;
+      value, maxLength, disabled, type, checked } = this.props;
     return (
       <>
         <input
-          disabled={disabled ? true : false}
           className={inputClass}
-          name={id}
-          type="text"
-          value={value}
-          placeholder={placeholder}
+          checked={checked && checked}
+          disabled={disabled ? true : false}
           maxLength={maxLength}
+          name={id}
+          id={id}
           onChange={onChange}
+          placeholder={placeholder}
+          type={type? type : "text"}
+          value={value}
         />
       </>
     )

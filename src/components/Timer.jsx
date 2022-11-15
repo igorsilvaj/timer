@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Button from './Button';
-import '../styles/Timer.css';
 import Input from './Input';
 
 class Timer extends Component {
@@ -10,6 +9,8 @@ class Timer extends Component {
       time: 0,
       intervalId: 0,
       startDisabled: true,
+      timerStarted: false,
+      songEnabled: true,
     }
   };
 
@@ -19,14 +20,32 @@ class Timer extends Component {
   };
 
   componentDidUpdate() {
-    const { time, intervalId } = this.state;
-    const { alert, sound } = this.props;
-    if (time === 0) {
-      clearInterval(intervalId);
-      sound && sound.play();
-      alert && window.alert(alert);
-      sound.pause();
+    const { time, intervalId, startDisabled,
+      timerStarted } = this.state;
+    const { alert } = this.props;
+      if (time === 0 && startDisabled && timerStarted ) {
+        clearInterval(intervalId);
+        this.handleSong('play');
+        this.setState({timerStarted: false});
+        setTimeout(() => {
+          alert && window.alert(alert);
+          this.handleSong('pause');
+        }, 500);
+      } else if(time === 0) clearInterval(intervalId);
+  };
+
+  handleSong = (status) => {
+    const {songEnabled} = this.state;
+    if(songEnabled) {
+      const { sound } = this.props;
+      if(status === 'play') sound && sound.play();
+      if(status === 'pause') sound.pause();
     }
+  };
+
+  handleMute = () => {
+    const {songEnabled} = this.state;
+    this.setState({songEnabled: !songEnabled});
   };
 
   initTimer = () => {
@@ -36,18 +55,18 @@ class Timer extends Component {
         this.setState({ time: time - 1 })
       }, 1000),
       startDisabled: true,
-    });
+      timerStarted: true });
   };
 
   stopTimer = () => {
-    const { intervalId } = this.state;
+    const { intervalId, time } = this.state;
     clearInterval(intervalId);
-    this.setState({ startDisabled: false });
+    if (time !== 0) {
+      this.setState({ startDisabled: false });
+    }
   };
 
-  clearTimer = () => {
-    this.setState({ time: 0 })
-  };
+  clearTimer = () => this.setState({ time: 0, timerStarted: false });
 
   formatTime = (seconds) => {
     const minutes = new Date(seconds * 1000).toISOString().substring(11, 19);
@@ -55,22 +74,24 @@ class Timer extends Component {
     return seconds < 3600 ? minutes : hours;
   };
 
-  addTime1Min = () => {
-    this.setState((prev) => ({ time: prev.time + 60, startDisabled: false }));
-  };
-
-  addTime5Min = () => {
-    this.setState((prev) => ({ time: prev.time + 300, startDisabled: false }));
-  };
-
-  addTime20Min = () => {
-    this.setState((prev) => ({ time: prev.time + 1200, startDisabled: false }));
+  addTime = (time) => {
+    this.setState((prev) => ({ time: prev.time + time, startDisabled: false }));
   };
 
   render() {
-    const { time, startDisabled } = this.state;
+    const { time, startDisabled, songEnabled } = this.state;
     return (
       <div className='timerContainer'>
+        <div className='soundContainer'>
+          <Input 
+            id="controlSound"
+            inputClass="controlSound" 
+            type='checkbox'
+            onChange={this.handleMute}
+            checked={songEnabled}
+            />
+          <label className='soundAux' htmlFor="controlSound"/>
+        </div>
         <h1 className='timerTitle'>Timer!</h1>
         <div className='inputContainer'>
           <Input
@@ -85,9 +106,9 @@ class Timer extends Component {
           />
         </div>
         <div className='btnContainer'>
-          <Button btnClass="btnStd" onClick={this.addTime1Min}>+ 1 Minuto</Button>
-          <Button btnClass="btnStd" onClick={this.addTime5Min}>+ 5 Minutos</Button>
-          <Button btnClass="btnStd" onClick={this.addTime20Min}>+ 20 Minutos</Button>
+          <Button btnClass="btnStd" onClick={() => this.addTime(60)}>+ 1 Minuto</Button>
+          <Button btnClass="btnStd" onClick={() => this.addTime(300)}>+ 5 Minutos</Button>
+          <Button btnClass="btnStd" onClick={() => this.addTime(1200)}>+ 20 Minutos</Button>
 
           <Button btnClass="btnStd" onClick={this.initTimer} disabled={startDisabled}>Iniciar</Button>
           <Button btnClass="btnStd" onClick={this.stopTimer}>Parar</Button>
